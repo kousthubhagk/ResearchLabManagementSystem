@@ -1,125 +1,208 @@
--- ResearchLab table
-INSERT INTO ResearchLab (LabID, LabName, LabComponents, LabComponentsDetails)
-VALUES
-    (1, 'Computer Science Lab', 'Computers, Projectors', 'High-end computers with graphic cards, HD projectors'),
-    (2, 'Chemistry Lab', 'Microscopes, Bunsen burners', 'Advanced chemistry equipment for experiments'),
-    (3, 'Physics Lab', 'Telescopes, Laser apparatus', 'Equipment for physics experiments and demonstrations'),
-    (4, 'Biology Lab', 'Microscopes, Dissection kits', 'Tools for biological studies and experiments'),
-    (5, 'Engineering Lab', '3D Printers, Prototyping tools', 'Facilities for engineering projects and prototyping'),
-    (6, 'Robotics Lab', 'Robot kits, Sensors', 'Resources for robotics and automation projects'),
-    (7, 'Data Science Lab', 'Servers, Data sets', 'Infrastructure for data analysis and machine learning'),
-    (8, 'Electronics Lab', 'Oscilloscopes, Circuit boards', 'Tools for electronics design and experimentation'),
-    (9, 'Psychology Lab', 'Psychometric tests, EEG machines', 'Equipment for psychological experiments'),
-    (10, 'Environmental Science Lab', 'Weather station, Soil testing kits', 'Tools for environmental studies');
+-- Create the ResearchLabManagementSystem database
+CREATE DATABASE IF NOT EXISTS ResearchLabManagementSystem;
+USE ResearchLabManagementSystem;
 
--- LabPersonnel table
-INSERT INTO LabPersonnel (PersonnelID, PersonnelName, LabID)
-VALUES
-    (1, 'John Doe', 1),
-    (2, 'Jane Smith', 2),
-    (3, 'Robert Johnson', 3),
-    (4, 'Emily Davis', 4),
-    (5, 'Michael Wilson', 5),
-    (6, 'Amanda White', 6),
-    (7, 'Daniel Miller', 7),
-    (8, 'Olivia Taylor', 8),
-    (9, 'Ethan Anderson', 9),
-    (10, 'Sophia Brown', 10);
+-- Create the ResearchLab table
+CREATE TABLE ResearchLab (
+    LabID INT PRIMARY KEY,
+    LabName VARCHAR(50),
+    LabComponents VARCHAR(50),
+    LabComponentsDetails VARCHAR(200)
+);
 
--- Teacher table
-INSERT INTO Teacher (TeacherID, TeacherName)
-VALUES
-    (1, 'Dr. Smith'),
-    (2, 'Prof. Johnson'),
-    (3, 'Dr. Williams'),
-    (4, 'Prof. Davis'),
-    (5, 'Dr. Taylor'),
-    (6, 'Prof. White'),
-    (7, 'Dr. Miller'),
-    (8, 'Prof. Anderson'),
-    (9, 'Dr. Wilson'),
-    (10, 'Prof. Brown');
+-- Create the LabPersonnel table
+CREATE TABLE LabPersonnel (
+    PersonnelID INT PRIMARY KEY,
+    PersonnelName VARCHAR(50),
+    LabID INT,
+    FOREIGN KEY (LabID) REFERENCES ResearchLab(LabID)
+);
 
--- Student table
-INSERT INTO Student (StudentID, StudentName, LabID)
-VALUES
-    (1, 'Alice Johnson', 1),
-    (2, 'Bob Smith', 2),
-    (3, 'Charlie Wilson', 3),
-    (4, 'David Davis', 4),
-    (5, 'Eva Taylor', 5),
-    (6, 'Frank White', 6),
-    (7, 'Grace Brown', 7),
-    (8, 'Henry Miller', 8),
-    (9, 'Isabel Anderson', 9),
-    (10, 'Jack Wilson', 10);
+-- Create the Teacher table
+CREATE TABLE Teacher (
+    TeacherID INT PRIMARY KEY,
+    TeacherName VARCHAR(50),
+    TeacherRole VARCHAR(20)
+);
 
--- ProjectProposal table
-INSERT INTO ProjectProposal (ProposalID, ProposalTitle, ProposalDesc, ProposalSubmissionDate, LabID)
-VALUES
-    (1, 'Machine Learning Project', 'Develop an ML model for image recognition', '2023-01-15', 1),
-    (2, 'Chemical Reaction Study', 'Investigate the kinetics of a specific chemical reaction', '2023-02-10', 2),
-    (3, 'Physics Experiment on Optics', 'Study the behavior of light in different mediums', '2023-03-05', 3),
-    (4, 'Genetic Engineering Project', 'Modify the DNA of a bacterial strain for a specific trait', '2023-04-20', 4),
-    (5, 'Civil Engineering Research', 'Analyze the structural stability of a building design', '2023-05-15', 5),
-    (6, 'Robotics Automation Project', 'Develop a robot for automated warehouse operations', '2023-06-12', 6),
-    (7, 'Data Analysis of Financial Data', 'Explore patterns and trends in financial market data', '2023-07-01', 7),
-    (8, 'Electronic Circuit Design', 'Create a circuit for a specific electronic device', '2023-08-18', 8),
-    (9, 'Psychological Study on Memory', 'Investigate factors affecting human memory retention', '2023-09-10', 9),
-    (10, 'Environmental Impact Assessment', 'Evaluate the environmental impact of a local construction project', '2023-10-05', 10);
+-- Create the Student table
+CREATE TABLE Student (
+    StudentID INT PRIMARY KEY,
+    StudentName VARCHAR(50),
+    LabID INT,
+    FOREIGN KEY (LabID) REFERENCES ResearchLab(LabID)
+);
 
--- Project table
-INSERT INTO Project (ProjectID, ProjectName, ProjectStatus, ProjectStartDate, ProjectEndDate, MentorID, LabID, ProposalID, ProjectType)
-VALUES
-    (1, 'Image Recognition Project', 'ongoing', '2023-02-01', NULL, 1, 1, 1, 'internship'),
-    (2, 'Reaction Kinetics Analysis', 'finished', '2023-02-20', '2023-04-15', 2, 2, 2, 'full time'),
-    (3, 'Optics Experiment', 'ongoing', '2023-03-15', NULL, 3, 3, 3, 'internship'),
-    (4, 'Genetic Engineering Study', 'finished', '2023-05-01', '2023-07-10', 4, 4, 4, 'part-time'),
-    (5, 'Structural Stability Analysis', 'ongoing', '2023-06-01', NULL, 5, 5, 5, 'internship'),
-    (6, 'Warehouse Robotics Project', 'ongoing', '2023-07-01', NULL, 6, 6, 6, 'full time'),
-    (7, 'Financial Data Analysis', 'finished', '2023-08-01', '2023-09-30', 7, 7, 7, 'part-time'),
-    (8, 'Electronic Circuit Design Project', 'ongoing', '2023-09-15', NULL, 8, 8, 8, 'full time'),
-    (9, 'Memory Study', 'finished', '2023-10-01', '2023-11-10', 9, 9, 9, 'internship'),
-    (10, 'Environmental Impact Assessment', 'ongoing', '2023-11-15', NULL, 10, 10, 10, 'part-time');
+-- Create the ProjectProposal table
+CREATE TABLE ProjectProposal (
+    ProposalID INT PRIMARY KEY,
+    ProposalTitle VARCHAR(100),
+    ProposalDesc VARCHAR(200),
+    ProposalSubmissionDate DATE,
+    LabID INT,
+    TeacherApprovedStatus ENUM('approved', 'not approved') DEFAULT 'not approved',
+    DirectorApprovedStatus ENUM('approved', 'not approved') DEFAULT 'not approved',
+    ApprovedID INT,
+    StudentID INT,
+    FOREIGN KEY (LabID) REFERENCES ResearchLab(LabID),
+    FOREIGN KEY (ApprovedID) REFERENCES Teacher(TeacherID),
+    FOREIGN KEY (StudentID) REFERENCES Student(StudentID)
+);
 
--- Eventss table
-INSERT INTO Eventss (EventID, EventName, EventDate, LabID, ManagerID, CashPrize, Winner, WinnerID)
-VALUES
-    (1, 'Tech Expo', '2023-03-10', 1, 1, 1000, 'Best Project', 1),
-    (2, 'Chemistry Fair', '2023-04-05', 2, 2, 800, 'Top Experiment', 2),
-    (3, 'Physics Symposium', '2023-05-20', 3, 3, 1200, 'Outstanding Presentation', 3),
-    (4, 'Biology Exhibition', '2023-06-15', 4, 4, 900, 'Best Display', 4),
-    (5, 'Engineering Showcase', '2023-07-10', 5, 5, 1500, 'Innovative Design', 5),
-    (6, 'Robotics Competition', '2023-08-25', 6, 6, 1000, 'Top Performing Robot', 6),
-    (7, 'Data Science Expo', '2023-09-15', 7, 7, 1300, 'Best Data Analysis', 7),
-    (8, 'Electronics Fair', '2023-10-20', 8, 8, 1100, 'Outstanding Circuit Design', 8),
-    (9, 'Psychology Conference', '2023-11-05', 9, 9, 1000, 'Best Research Paper', 9),
-    (10, 'Environmental Impact Forum', '2023-12-01', 10, 10, 1400, 'Top Presentation', 10);
+-- Create the Project table
+CREATE TABLE Project (
+    ProjectID INT PRIMARY KEY,
+    ProjectName VARCHAR(100),
+    ProjectStatus ENUM('ongoing', 'finished', 'pending'),
+    ProjectStartDate DATE,
+    ProjectEndDate DATE,
+    MentorID INT,
+    StudentID INT,
+    LabID INT,
+    ProposalID INT,
+    ProjectType VARCHAR(20),
+    FOREIGN KEY (LabID) REFERENCES ResearchLab(LabID),
+    FOREIGN KEY (MentorID) REFERENCES Teacher(TeacherID),
+    FOREIGN KEY (ProposalID) REFERENCES ProjectProposal(ProposalID),
+    FOREIGN KEY (StudentID) REFERENCES Student(StudentID)
+);
 
--- stipend table
-INSERT INTO stipend (StipendID, StipendAmount, StipendDate, StudentID, LabID)
-VALUES
-    (1, 500, '2023-03-15', 1, 1),
-    (2, 600, '2023-04-15', 2, 2),
-    (3, 550, '2023-05-15', 3, 3),
-    (4, 700, '2023-06-15', 4, 4),
-    (5, 800, '2023-07-15', 5, 5),
-    (6, 750, '2023-08-15', 6, 6),
-    (7, 900, '2023-09-15', 7, 7),
-    (8, 650, '2023-10-15', 8, 8),
-    (9, 750, '2023-11-15', 9, 9),
-    (10, 700, '2023-12-15', 10, 10);
+-- Create the Eventss table
+CREATE TABLE Eventss (
+    EventID INT PRIMARY KEY,
+    EventName VARCHAR(50),
+    EventDate DATE,
+    LabID INT,
+    ManagerID INT,
+    CashPrize INT,
+    Winner VARCHAR(50),
+    WinnerID INT,
+    FOREIGN KEY (LabID) REFERENCES ResearchLab(LabID),
+    FOREIGN KEY (ManagerID) REFERENCES Teacher(TeacherID),
+    FOREIGN KEY (WinnerID) REFERENCES Student(StudentID)
+);
 
--- AttendanceRecord table
-INSERT INTO AttendanceRecord (RecordID, RecordType, DateOfEntry, EntryTime, ExitTime, Signature, StudentID, TeacherID, LabID)
-VALUES
-    (1, 'Biometric', '2023-03-01', '08:00:00', '16:00:00', 123456, 1, 1, 1),
-    (2, 'Manual Entry', '2023-03-02', '08:30:00', '16:30:00', 654321, 2, 2, 2),
-    (3, 'Biometric', '2023-03-03', '09:00:00', '17:00:00', 987654, 3, 3, 3),
-    (4, 'Manual Entry', '2023-03-04', '09:30:00', '17:30:00', 456789, 4, 4, 4),
-    (5, 'Biometric', '2023-03-05', '10:00:00', '18:00:00', 789012, 5, 5, 5),
-    (6, 'Manual Entry', '2023-03-06', '10:30:00', '18:30:00', 567890, 6, 6, 6),
-    (7, 'Biometric', '2023-03-07', '11:00:00', '19:00:00', 234567, 7, 7, 7),
-    (8, 'Manual Entry', '2023-03-08', '11:30:00', '19:30:00', 890123, 8, 8, 8),
-    (9, 'Biometric', '2023-03-09', '12:00:00', '20:00:00', 345678, 9, 9, 9),
-    (10, 'Manual Entry', '2023-03-10', '12:30:00', '20:30:00', 012345, 10, 10, 10);
+-- Create the stipend table
+CREATE TABLE Stipend (
+    StipendID INT PRIMARY KEY,
+    StipendAmount INT,
+    StipendDate DATE,
+    StudentID INT,
+    LabID INT,
+    FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+    FOREIGN KEY (LabID) REFERENCES ResearchLab(LabID)
+);
+
+-- Create the AttendanceRecord table
+CREATE TABLE AttendanceRecord (
+    RecordID INT PRIMARY KEY,
+    RecordType VARCHAR(20),
+    DateOfEntry DATE,
+    EntryTime TIME,
+    ExitTime TIME,
+    Signature INT,
+    StudentID INT,
+    TeacherID INT,
+    LabID INT,
+    FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+    FOREIGN KEY (TeacherID) REFERENCES Teacher(TeacherID),
+    FOREIGN KEY (LabID) REFERENCES ResearchLab(LabID)
+);
+
+INSERT INTO ResearchLab (LabID, LabName, LabComponents, LabComponentsDetails) VALUES
+(1, 'Centre for Intelligent Systems', 'Sensors, Robotics', 'Advanced equipment for intelligent systems research'),
+(2, 'Centre for Cloud Computing & Big Data', 'Servers, Cloud infrastructure', 'Lab for cloud computing and big data research'),
+(3, 'Knowledge Analytics & Ontological Eng.', 'Data analytics tools, Ontology software', 'Lab for knowledge analytics and ontological engineering'),
+(4, 'Center for Pattern Recognition', 'Cameras, Image processing tools', 'Lab for pattern recognition research'),
+(5, 'Centre for Research in Space Science', 'Telescopes, Satellite communication equipment', 'Lab for space science and technology research'),
+(6, 'Center for Data Sciences & Applied ML', 'Machine learning algorithms, Data processing tools', 'Lab for data sciences and applied machine learning'),
+(7, 'Center of Excellence in Info. Security', 'Firewalls, Forensic tools', 'Lab for information security, forensics, and cyber resilience'),
+(8, 'Center of Excellence in IoT', 'IoT devices, Sensors', 'Lab for Internet of Things (IoT) research');
+
+-- Insert data into LabPersonnel table
+INSERT INTO LabPersonnel (PersonnelID, PersonnelName, LabID) VALUES
+(1, 'Dr. Smith', 1),
+(2, 'Prof. Johnson', 2),
+(3, 'Dr. Brown', 3),
+(4, 'Prof. Davis', 4),
+(5, 'Dr. Wilson', 5),
+(6, 'Prof. Turner', 6),
+(7, 'Dr. Harris', 7),
+(8, 'Prof. Miller', 8);
+
+-- Insert data into Teacher table
+INSERT INTO Teacher (TeacherID, TeacherName, TeacherRole) VALUES
+(1, 'Dr. Smith', 'Professor'),
+(2, 'Prof. Johnson', 'Associate Professor'),
+(3, 'Dr. Brown', 'Professor'),
+(4, 'Prof. Davis', 'Associate Professor'),
+(5, 'Dr. Wilson', 'Professor'),
+(6, 'Prof. Turner', 'Assistant Professor'),
+(7, 'Dr. Harris', 'Professor'),
+(8, 'Prof. Miller', 'Associate Professor');
+
+-- Insert data into Student table
+INSERT INTO Student (StudentID, StudentName, LabID) VALUES
+(1, 'Alice Smith', 1),
+(2, 'Bob Johnson', 2),
+(3, 'Eva Brown', 3),
+(4, 'Charlie Davis', 4),
+(5, 'Grace Wilson', 5),
+(6, 'David Turner', 6),
+(7, 'Sophie Harris', 7),
+(8, 'Michael Miller', 8);
+
+-- Insert data into ProjectProposal table
+INSERT INTO ProjectProposal (ProposalID, ProposalTitle, ProposalDesc, ProposalSubmissionDate, LabID, TeacherApprovedStatus, DirectorApprovedStatus, ApprovedID, StudentID) VALUES
+(1, 'Intelligent Systems Project', 'Developing smart devices', '2023-01-15', 1, 'approved', 'approved', 1, 1),
+(2, 'Cloud Computing Research', 'Exploring cloud technologies', '2023-02-01', 2, 'not approved', 'approved', 2, 2),
+(3, 'Ontological Engineering Study', 'Building ontologies for knowledge representation', '2023-03-01', 3, 'not approved', 'approved', 3, 3),
+(4, 'Pattern Recognition Project', 'Image recognition algorithms', '2023-04-15', 4, 'approved', 'approved', 4, 4),
+(5, 'Space Science Investigation', 'Studying celestial bodies', '2023-05-10', 5, 'approved', 'not approved', 5, 5),
+(6, 'Applied Machine Learning in Data Sciences', 'Utilizing ML in data analysis', '2023-06-05', 6, 'not approved', 'not approved', NULL, 6),
+(7, 'Information Security Research', 'Enhancing cybersecurity measures', '2023-07-20', 7, 'approved', 'approved', 7, 7),
+(8, 'Internet of Things (IoT) Project', 'Creating interconnected devices', '2023-08-12', 8, 'approved', 'approved', 8, 8);
+
+-- Insert data into Project table
+INSERT INTO Project (ProjectID, ProjectName, ProjectStatus, ProjectStartDate, ProjectEndDate, MentorID, StudentID, LabID, ProposalID, ProjectType) VALUES
+(1, 'Smart Device Prototype', 'ongoing', '2023-01-20', '2023-05-20', 1, 1, 1, 1, 'Research'),
+(2, 'Cloud Storage Solutions', 'finished', '2023-02-10', '2023-04-30', 2, 2, 2, 2, 'Development'),
+(3, 'Ontology Builder Tool', 'ongoing', '2023-03-15', '2023-08-15', 3, 3, 3, 3, 'Research'),
+(4, 'Image Recognition Software', 'pending', NULL, NULL, 4, 4, 4, 4, 'Development'),
+(5, 'Satellite Communication System', 'finished', '2023-05-20', '2023-09-30', 5, 5, 5, 5, 'Research'),
+(6, 'Data Analysis Platform', 'ongoing', '2023-06-10', '2023-12-10', 6, 6, 6, 6, 'Development'),
+(7, 'Cybersecurity Framework', 'pending', NULL, NULL, 7, 7, 7, 7, 'Research'),
+(8, 'IoT Device Prototypes', 'pending', NULL, NULL, 8, 8, 8, 8, 'Development');
+
+-- Insert data into Eventss table
+INSERT INTO Eventss (EventID, EventName, EventDate, LabID, ManagerID, CashPrize, Winner, WinnerID) VALUES
+(1, 'Innovation Expo 2023', '2023-04-01', 1, 1, 1000, 'Project 1 Team', 1),
+(2, 'Tech Symposium 2023', '2023-05-15', 2, 2, 1500, 'Project 2 Team', 2),
+(3, 'Knowledge Summit 2023', '2023-06-20', 3, 3, 1200, 'Project 3 Team', 3),
+(4, 'Pattern Recognition Conference', '2023-07-10', 4, 4, 800, 'Project 4 Team', 4),
+(5, 'Space Tech Expo 2023', '2023-08-25', 5, 5, 2000, 'Project 5 Team', 5),
+(6, 'Data Science Convention', '2023-09-15', 6, 6, 1800, 'Project 6 Team', 6),
+(7, 'Cybersecurity Summit 2023', '2023-10-05', 7, 7, 1600, 'Project 7 Team', 7),
+(8, 'IoT World 2023', '2023-11-20', 8, 8, 2200, 'Project 8 Team', 8);
+
+-- Insert data into Stipend table
+INSERT INTO Stipend (StipendID, StipendAmount, StipendDate, StudentID, LabID) VALUES
+(1, 500, '2023-05-01', 1, 1),
+(2, 600, '2023-05-15', 2, 2),
+(3, 550, '2023-06-01', 3, 3),
+(4, 700, '2023-06-15', 4, 4),
+(5, 800, '2023-07-01', 5, 5),
+(6, 750, '2023-07-15', 6, 6),
+(7, 900, '2023-08-01', 7, 7),
+(8, 1000, '2023-08-15', 8, 8);
+
+-- Insert data into AttendanceRecord table
+INSERT INTO AttendanceRecord (RecordID, RecordType, DateOfEntry, EntryTime, ExitTime, Signature, StudentID, TeacherID, LabID) VALUES
+(1, 'Class', '2023-05-01', '09:00:00', '12:00:00', 1, 1, 1, 1),
+(2, 'Lab', '2023-05-02', '10:00:00', '13:00:00', 1, 2, 2, 2),
+(3, 'Class', '2023-05-03', '11:00:00', '14:00:00', 1, 3, 3, 3),
+(4, 'Lab', '2023-05-04', '12:00:00', '15:00:00', 1, 4, 4, 4),
+(5, 'Class', '2023-05-05', '13:00:00', '16:00:00', 1, 5, 5, 5),
+(6, 'Lab', '2023-05-06', '14:00:00', '17:00:00', 1, 6, 6, 6),
+(7, 'Class', '2023-05-07', '15:00:00', '18:00:00', 1, 7, 7, 7),
+(8, 'Lab', '2023-05-08', '16:00:00', '19:00:00', 1, 8, 8, 8);
