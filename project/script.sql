@@ -20,6 +20,7 @@ CREATE TABLE LabPersonnel (
 CREATE TABLE Teacher (
 	TeacherID INT,
     TeacherName varchar(20),
+    TeacherRole varcahr(20), -- this is to indicate hierarchy
     PRIMARY KEY (TeacherID)
 );
 
@@ -37,8 +38,14 @@ CREATE TABLE ProjectProposal (
     ProposalDesc varchar(200),
     ProposalSubmissionDate datetime,
     LabID INT,
+    TeacherApprovedStatus enum('approved','not approved') default 'not approved',
+    DirectorApprovedStatus enum('approved','not approved') default 'not approved',
+    ApprovedID INT, -- the id of the teacher who approves
+    StudentID INT,
     PRIMARY KEY (ProposalID),
-    foreign key (LabID) references ResearchLab(LabID)
+    foreign key (LabID) references ResearchLab(LabID),
+    foreign key (ApprovedID) references Teacher(TeacherID),
+    foreign key (StudentID) references Student(StudentID)
 );
 
 CREATE TABLE Project (
@@ -48,6 +55,7 @@ CREATE TABLE Project (
     ProjectStartDate datetime,
     ProjectEndDate datetime,
     MentorID INT,
+    StudentID INT,
     LabID INT,
     ProposalID INT,
     ProjectType varchar(20),
@@ -55,7 +63,8 @@ CREATE TABLE Project (
     PRIMARY KEY (ProjectID),
     foreign key (LabID) references ResearchLab(LabID),
     foreign key (MentorID) references Teacher(TeacherID),
-    foreign key (ProposalID) references ProjectProposal(ProposalID)
+    foreign key (ProposalID) references ProjectProposal(ProposalID),
+    foreign key (StudentID) references Student(StudentID)
 );
 
 CREATE TABLE Eventss (
@@ -101,3 +110,30 @@ CREATE TABLE AttendanceRecord (
     foreign key (TeacherID) references Teacher(TeacherID),
     foreign key (LabID) references ResearchLab(LabID)
 );
+
+-- for project approval
+DELIMITER //
+CREATE PROCEDURE UpdateApprovalStatus(
+    IN proposal_id INT,
+    IN teacher_approval_status ENUM('approved', 'not approved'),
+    IN director_approval_status ENUM('approved', 'not approved'),
+    IN approver_id INT
+)
+BEGIN
+    UPDATE ProjectProposal
+    SET 
+        TeacherApprovedStatus = teacher_approval_status,
+        DirectorApprovedStatus = director_approval_status,
+        ApprovedID = approver_id
+    WHERE ProposalID = proposal_id;
+
+    -- If both teacher and director have approved, update the corresponding student's project table
+    IF teacher_approval_status = 'approved' AND director_approval_status = 'approved' THEN
+        -- You can perform further actions here
+        -- For example, you can insert data into the Project table
+        INSERT INTO Project (ProjectName, ProjectStatus, ProjectStartDate, ProjectEndDate, MentorID, StudentID, LabID, ProposalID, ProjectType)
+        VALUES ('ProjectName', 'ongoing', NOW(), NOW(), 1, (SELECT StudentID FROM ProjectProposal WHERE ProposalID = proposal_id), (SELECT LabID FROM ProjectProposal WHERE ProposalID = proposal_id), proposal_id, 'internship');
+    END IF;
+END //
+DELIMITER ;
+
