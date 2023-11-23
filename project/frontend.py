@@ -8,7 +8,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning, module="streamlit
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="sniperrike",
+    password="",
     database="ResearchLabManagementSystem"
 )
 
